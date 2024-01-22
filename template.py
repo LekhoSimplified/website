@@ -39,7 +39,11 @@ def Json2Dom(project, jsonNode, level=0):
             if "article:" in jsonNode['attributes']['href']:
                 article_id = jsonNode['attributes']['href'].split(":")[1]
                 # print(project)
-                article_filename = secure_filename(project["Articles"][article_id]["Name"])
+
+                if "Home_Article" in project and project["Home_Article"] == article_id:
+                    article_filename = "index"
+                else:
+                    article_filename = secure_filename(project["Articles"][article_id]["Name"])
 
                 jsonNode['attributes']['href'] = article_filename + ".html"
                 print(jsonNode['attributes']['href'])
