@@ -337,7 +337,7 @@ def save_article(project_id, article_id):
             data["Home_Article"] = article_id
             del request.json["Home"]
 
-        elif request.json["Home"] == False and "Home_Article" in data:
+        elif request.json["Home"] == False and "Home_Article" in data and data["Home_Article"] == article_id:
             del data["Home_Article"]
 
         data['Articles'][article_id] = request.json

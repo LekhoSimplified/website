@@ -3,12 +3,18 @@ Website Designer
 
 Set up
 ```bash
+# Install Flask
 pip install flask
-pip install bleach
 
+# Install pyEditorJS
 git clone https://github.com/LekhoSimplified/pyEditorJS.git
 cd pyEditorJS
 python3 setup.py install
+cd ..
+
+# Download Lekho Website
+git clone https://github.com/LekhoSimplified/website.git
+cd website
 ```
 
 Running
