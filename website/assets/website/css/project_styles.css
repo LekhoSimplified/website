@@ -1,0 +1,46 @@
+.bg-scroll { background-attachment: scroll; }
+.bg-fixed { background-attachment: fixed; }
+.bg-local { background-attachment: local; }
+.bg-initial { background-attachment: initial; }
+.bg-inherit { background-attachment: inherit; }
+
+.show-empty span:empty, a:empty {
+	padding: 0.5rem !important;
+	outline: 1px solid gray;
+}
+
+.show-empty :not(img):empty {
+	min-height: 1rem;
+	min-width: 1rem;
+	padding: 0.5rem !important;
+	outline: 1px solid gray;
+}
+
+.show-empty img:not([src]), .show-empty img[src=''] {
+	padding: 0.5rem !important;
+	outline: 1px solid gray;
+}
+
+.debug * {
+    outline: 1px solid gold !important;
+}
+
+.debug-white * {
+    outline: 1px solid #fff !important;
+}
+
+.debug-black * {
+    outline: 1px solid #000 !important;
+}
+
+/**/
+
+.selected_element {
+	outline: 2px solid cyan !important;
+}
+
+grammarly-extension {
+	padding: 0 !important;
+	min-width: 0;
+	min-height: 0;
+}

@@ -1,3 +1,7 @@
+out/*
+.DS_Store
+website/assets/projects/*
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

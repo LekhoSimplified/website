@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Website</title>
+
+	<link rel="stylesheet" href="assets/website/css/tachyons.min.css"/>
+	<link rel="stylesheet" href="assets/website/css/colours.css"/>
+	<link rel="stylesheet" href="assets/website/css/styles.css"/>
+</head>
+<body class="bb bt vh-100 flex flex-row">
+	<div id="toolbar" class="h-100 w5 br bg-near-white pa2 flex flex-column">
+		<div class="flex ph2 flex-row justify-between">
+			<label class="mv1">Open 
+				<select id="project_list" class="w4">
+				</select>
+			</label>
+
+			<button class="mv1" onclick="New_project()">New</button>
+		</div>
+
+		<input type="text" id="project_name" class="f4 pa2 w-100 mt2" onblur="Rename_project(this.value)" disabled>
+
+		<div class="h2 bb"></div>
+
+		<div class="overflow-y-auto">
+			<details>
+				<summary class="f5 mt3">Tools</summary>
+				<div id="tools" class="flex flex-column pl1">
+				</div>
+			</details>
+
+			<details open>
+				<summary class="f5 mt3">
+					Library
+				</summary>
+				<div class="flex flex-column pl1">
+					<details class="pa1">
+						<summary class="f5">Templates</summary>
+						<div id="template_list" class="flex flex-column pl1">
+						</div>
+					</details>
+					<details class="pa1">
+						<summary class="f5">Images</summary>
+						<div class="flex flex-column pl1">
+							<a href="https://unsplash.com/" target="_blank" class="bl bw2 black link ph1 pv2 hover-bg-moon-gray">Unsplash</a>
+						</div>
+					</details>
+				</div>
+			</details>
+
+			<details id="asset_details" class="dn" open>
+				<summary class="f5 mt3">Assets
+
+					<details id="add_asset" title="Add Asset" class="relative hide-marker di fr mr3">
+						<summary class="f5 tr pointer ph1"> ⊕ </summary>
+						<div class="absolute right-0 flex flex-column ba br2 shadow-1 w4 bg-near-white">
+							<a href="#" onclick="New_article()" class="black link pa1 hover-bg-light-gray">New Article</a>
+
+					  		<label class="pointer pa1 hover-bg-light-gray">
+								<input 
+									id="asset_file",
+									type="file",
+									hidden="hidden",
+									onchange="Upload_image_file(this.files[0])"
+									accept="image/*">
+								Upload Image
+							</label>
+
+							<label class="pointer pa1 hover-bg-light-gray">
+								<input 
+									id="asset_file",
+									type="file",
+									hidden="hidden",
+									accept="application/pdf",
+									onchange="Upload_document_file(this.files[0])">
+								Upload Document
+							</label>
+							<a href="#" onclick="New_template()" class="black link pa1 hover-bg-light-gray">New Template</a>
+							<!-- <label class="pointer pa1 hover-bg-light-gray">
+								<input 
+									id="asset_file",
+									type="file",
+									hidden="hidden",
+									onchange="Upload_template_file(this.files[0])"
+									accept="application/zip">
+								Upload Template
+							</label> -->
+						</div>
+					</details>
+				</summary>
+				<div class="pl1">
+					<details class="pa1">
+						<summary>Articles</summary>
+						<div id="article_assets" class="pl1 flex flex-column"></div>
+					</details>
+					<details class="pa1">
+						<summary>Images</summary>
+						<div id="image_assets" class="pl1 flex flex-column"></div>
+					</details>
+					<details class="pa1">
+						<summary>Documents</summary>
+						<div id="document_assets" class="pl1 flex flex-column"></div>
+					</details>
+					<details class="pa1">
+						<summary>Templates</summary>
+						<div id="template_assets" class="pl1 flex flex-column"></div>
+					</details>
+				</div>
+			</details>
+			<details id="project_details" class="dn" open>
+				<summary class="f5 mt3">Project</summary>
+				<div class="flex flex-column pl1">
+					<a href="#" onclick="Publish_project()" class="black link pa1 hover-bg-moon-gray">Publish</a>
+					<!-- <a href="#" onclick="New_article()" class="black link pa1 hover-bg-moon-gray">Download</a> -->
+					<!-- <a href="#" onclick="New_article()" class="black link pa1 hover-bg-moon-gray">Settings</a> -->
+
+				</div>
+			</details>
+		</div>
+	</div>
+	<div class="h-100 flex flex-auto flex-column">
+		<div id="editor_container" class="flex-auto w-100 h-100 flex flex-column"></div>
+	</div>
+	
+
+	<script src="assets/website/js/jquery-3.7.1.min.js"></script>
+	<script src="assets/website/js/mithril.js"></script>
+	<script src="assets/website/js/filerobot-image-editor.min.js"></script>
+
+  	<script src="assets/website/js/editorjs-header.js"></script>
+  	<script src="assets/website/js/editorjs-list.js"></script>
+  	<script src="assets/website/js/editorjs-marker.js"></script>
+  	<script src="assets/website/js/editorjs-inline-code.js"></script>
+  	<script src="assets/website/js/editorjs.js"></script>
+
+
+	<script src="assets/website/js/Library_Templates.js"></script>
+
+	<script src="assets/website/js/DOMEditor.js"></script>
+	<script src="assets/website/js/dirty_bit.js"></script>
+	
+
+	<script src="assets/website/js/Tools_Colours.js"></script>
+	<script src="assets/website/js/Tools_Elements.js"></script>
+	<script src="assets/website/js/Tools_StyleEditor.js"></script>
+	<script src="assets/website/js/Tools_Properties.js"></script>
+
+	<script src="assets/website/js/Assets_Utilities.js"></script>
+
+	<script src="assets/website/js/Assets_Templates.js"></script>
+
+	<script src="assets/website/js/Assets_Articles.js"></script>
+	<script src="assets/website/js/Assets_Images.js"></script>
+	<script src="assets/website/js/Assets_Documents.js"></script>
+
+	<script src="assets/website/js/Project.js"></script>
+
+	<script src="assets/website/js/main.js"></script>
+
+</body>
+</html>

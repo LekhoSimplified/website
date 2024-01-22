@@ -1,0 +1,12 @@
+details.hide-marker > summary::-webkit-details-marker {
+	  display:none;
+}
+
+details.hide-marker > summary {
+   list-style: none;
+ }	
+
+
+#editor_container a {
+	color: #255791;
+}
