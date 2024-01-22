@@ -15,3 +15,5 @@ Running
 ```bash
 python app.py
 ```
+
+[User Manual](https://lekho-in.b-cdn.net/LekhoWebsite_user_manual.pdf)
