@@ -35,7 +35,7 @@ def Json2Dom(project, jsonNode, level=0):
                 jsonNode['attributes']['class'] = c
 
         if attr == 'href':
-            print(jsonNode['attributes']['href'])
+            # print(jsonNode['attributes']['href'])
             if "article:" in jsonNode['attributes']['href']:
                 article_id = jsonNode['attributes']['href'].split(":")[1]
                 # print(project)
@@ -46,7 +46,7 @@ def Json2Dom(project, jsonNode, level=0):
                     article_filename = secure_filename(project["Articles"][article_id]["Name"])
 
                 jsonNode['attributes']['href'] = article_filename + ".html"
-                print(jsonNode['attributes']['href'])
+                # print(jsonNode['attributes']['href'])
 
             else:
                 jsonNode['attributes']['href'] = re.sub(r"/website/assets/projects/[\d\-\w]+/(js|css|images|documents)/(.*)", r"assets/\g<1>/\g<2>", jsonNode['attributes'][attr])

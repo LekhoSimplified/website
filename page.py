@@ -44,7 +44,7 @@ def To_html(name, editor_js_data):
 
     parser = EditorJsParser(editor_js_data) # initialize the parser
 
-    return parser.html(sanitize=True)
+    return parser.html(sanitize=False)
 
     # return parser.mithril(sanitize=True)
 
