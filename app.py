@@ -46,8 +46,8 @@ def list_templates():
 
     assets = {}
     # Open and parse the projet JSON file
-    f = open(f'website/assets/website/templates.json')  
-    data = json.load(f)
+    with open(f'website/assets/website/templates.json') as f:
+        data = json.load(f)
     
     return jsonify([0, "List successful", data])
 
@@ -106,16 +106,16 @@ def rename_projects(project_id):
 
 @app.route("/project/<project_id>/open")
 def open_project(project_id):
-    f = open(f'website/assets/projects/{project_id}/project.json')  
-    project = json.load(f)
+    with open(f'website/assets/projects/{project_id}/project.json') as f:
+        project = json.load(f)
 
     return jsonify(project)
 
 
 @app.route("/project/<project_id>/publish")
 def publish_project(project_id):
-    f = open(f'website/assets/projects/{project_id}/project.json')  
-    project = json.load(f)
+    with open(f'website/assets/projects/{project_id}/project.json') as f:
+        project = json.load(f)
 
     publish.process(project, project_id)
     return jsonify([0])
@@ -166,8 +166,8 @@ def import_template_project(project_id, template_id):
 @app.route("/project/<project_id>/new/template", methods=['CREATE'])
 def new_template(project_id):
     if request.method == 'CREATE':
-        f = open(f'website/assets/projects/{project_id}/project.json')  
-        data = json.load(f)
+        with open(f'website/assets/projects/{project_id}/project.json') as f:
+            data = json.load(f)
 
         myuuid = str(uuid.uuid4())
 
@@ -191,8 +191,8 @@ def new_template(project_id):
 @app.route("/project/<project_id>/save/template/<template_id>", methods=['UPDATE'])
 def save_template(project_id, template_id):
     if request.method == 'UPDATE':
-        f = open(f'website/assets/projects/{project_id}/project.json')  
-        data = json.load(f)
+        with open(f'website/assets/projects/{project_id}/project.json') as f:
+            data = json.load(f)
 
         if not template_id in data["Templates"]:
             data["Templates"][template_id] = {}
@@ -218,8 +218,8 @@ def save_template(project_id, template_id):
 @app.route("/project/<project_id>/delete/template/<template_id>", methods=['DELETE'])
 def delete_template(project_id, template_id):
     if request.method == 'DELETE':
-        f = open(f'website/assets/projects/{project_id}/project.json')  
-        data = json.load(f)
+        with open(f'website/assets/projects/{project_id}/project.json') as f:
+            data = json.load(f)
 
         del data["Templates"][template_id]
 
@@ -263,8 +263,8 @@ def list_assets_template(project_id, template_id):
 @app.route("/project/<project_id>/open/template/<template_id>", methods=['READ'])
 def open_template(project_id, template_id):
     if request.method == 'READ':
-        f = open(f'website/assets/projects/{project_id}/project.json')  
-        data = json.load(f)
+        with open(f'website/assets/projects/{project_id}/project.json') as f:
+            data = json.load(f)
 
         if data["Template"] == template_id:
             data["Templates"][template_id]["Default"] = True
@@ -279,8 +279,8 @@ def open_template(project_id, template_id):
 @app.route("/project/<project_id>/new/article", methods=['CREATE'])
 def new_article(project_id):
     if request.method == 'CREATE':
-        f = open(f'website/assets/projects/{project_id}/project.json')  
-        data = json.load(f)
+        with open(f'website/assets/projects/{project_id}/project.json') as f:
+            data = json.load(f)
 
         myuuid = str(uuid.uuid4())
 
@@ -303,8 +303,8 @@ def new_article(project_id):
 @app.route("/project/<project_id>/delete/article/<article_id>", methods=['DELETE'])
 def delete_article(project_id, article_id):
     if request.method == 'DELETE':
-        f = open(f'website/assets/projects/{project_id}/project.json')  
-        data = json.load(f)
+        with open(f'website/assets/projects/{project_id}/project.json') as f:
+            data = json.load(f)
 
         del data['Articles'][article_id]
         data_str = json.dumps(data)
@@ -319,8 +319,8 @@ def delete_article(project_id, article_id):
 @app.route("/project/<project_id>/view/article/<article_id>", methods=['READ'])
 def load_article(project_id, article_id):
     if request.method == 'READ':
-        f = open(f'website/assets/projects/{project_id}/project.json')  
-        data = json.load(f)
+        with open(f'website/assets/projects/{project_id}/project.json') as f:
+            data = json.load(f)
 
         if 'Home_Article' in data and data['Home_Article'] == article_id:
             data['Articles'][article_id]["Home"] = True

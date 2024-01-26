@@ -4180,7 +4180,8 @@ let StyleEditor = {
 							m('INPUT', {
 									"class": 'toggle',
 									"type": 'checkbox',
-									"value": 'show-empty'
+									"value": 'show-empty',
+									"checked": true
 								},[
 
 							]),

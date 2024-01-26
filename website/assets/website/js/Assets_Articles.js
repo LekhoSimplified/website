@@ -149,7 +149,7 @@ function Render_article(article_id, data) {
         /**
          * Or pass class directly without any configuration
          */
-        // image: SimpleImage,
+        image: SimpleImage,
 
         list: {
           class: List,

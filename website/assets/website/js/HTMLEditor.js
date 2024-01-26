@@ -1,68 +1,70 @@
-var DOMEditor = {
-	selected_element: null,
-	read_only: false,
-	insert_mode: 'child',
+class HTMLEditor {
+	constructor(iframe) {
+		this.iframe = iframe
+		this.selected_element = null
+		this.read_only = false
+		this.insert_mode = 'child'
 
-	Init: function() {
-		template_iframe.contentWindow.document.body.addEventListener('click', function(e) {
+		self = this
+		iframe.contentWindow.document.body.addEventListener('click', function(e) {
 			if (e.target.tagName == "A")
 				e.preventDefault()
 
-			DOMEditor.Select(e.target)
+			self.Select(e.target)
 		})
 
-		template_iframe.contentWindow.document.body.addEventListener("paste", (e) => {
+		iframe.contentWindow.document.body.addEventListener("paste", (e) => {
 			e.preventDefault();
 			const text = e.clipboardData.getData('text/plain');
-			template_iframe.contentWindow.document.execCommand("insertHTML", false, text);
+			iframe.contentWindow.document.execCommand("insertHTML", false, text);
 		});
 
-		DOMEditor.Select_body()
-	},
+		this.Select_body()
+	}
 
-	Insert_Node: function(element) {
-		if (DOMEditor.insert_mode === 'child')
-			DOMEditor.selected_element.appendChild(element);
-		else if (DOMEditor.insert_mode === 'insertBefore')
-			DOMEditor.selected_element.parentNode.insertBefore(element, DOMEditor.selected_element);
-		else if (DOMEditor.insert_mode === 'insertAfter')
-			DOMEditor.selected_element.parentNode.insertBefore(element, DOMEditor.selected_element.nextSibling);
-	},
+  	Insert_Node (element) {
+		if (this.insert_mode === 'child')
+			this.selected_element.appendChild(element);
+		else if (this.insert_mode === 'insertBefore')
+			this.selected_element.parentNode.insertBefore(element, this.selected_element);
+		else if (this.insert_mode === 'insertAfter')
+			this.selected_element.parentNode.insertBefore(element, this.selected_element.nextSibling);
+	}
 
-	Add_class: function(c) {
-		if (DOMEditor.read_only) return
+	Add_class (c) {
+		if (this.read_only) return
 		
-		DOMEditor.selected_element.classList.add(c)
-		property_class_list.value = DOMEditor.selected_element.className.replace( /(?:^|\s)selected_element(?!\S)/g , '' )
+		this.selected_element.classList.add(c)
+		property_class_list.value = this.selected_element.className.replace( /(?:^|\s)selected_element(?!\S)/g , '' )
 
 		Set_dirty_bit()
-	},
+	}
 
-	Remove_classes: function(cs) {
-		if (DOMEditor.read_only) return
+	Remove_classes (cs) {
+		if (this.read_only) return
 		
 		for (var c of cs) {
-			if (DOMEditor.selected_element.classList.contains(c)) {
-				DOMEditor.selected_element.classList.remove(c)
+			if (this.selected_element.classList.contains(c)) {
+				this.selected_element.classList.remove(c)
 			}
 		}
 
-		DOMEditor.selected_element.classList.add('selected_element')
-		property_class_list.value = DOMEditor.selected_element.className.replace( /(?:^|\s)selected_element(?!\S)/g , '' )
+		this.selected_element.classList.add('selected_element')
+		property_class_list.value = this.selected_element.className.replace( /(?:^|\s)selected_element(?!\S)/g , '' )
 
 		Set_dirty_bit()
-	},
+	}
 
-	Append_child: function(tag) {
-		if (DOMEditor.read_only) return
+	Append_child (tag) {
+		if (this.read_only) return
 		
 		element = document.createElement(tag)
-		DOMEditor.Insert_Node(element)
+		this.Insert_Node(element)
 		Set_dirty_bit()
-	},
+	}
 
-	Append_child_with_properties: function(tag_info) {
-		if (DOMEditor.read_only) return
+	Append_child_with_properties (tag_info) {
+		if (this.read_only) return
 		
 		element = document.createElement(tag_info["tag"])
 
@@ -75,68 +77,68 @@ var DOMEditor = {
 		if ("text" in tag_info)
 			element.innerText = tag_info["text"]
 
-		DOMEditor.Insert_Node(element)
+		this.Insert_Node(element)
 		Set_dirty_bit()
-	},
+	}
 
-	Set_text: function(value) {
-		if (DOMEditor.read_only) return
+	Set_text (value) {
+		if (this.read_only) return
 		
-		DOMEditor.selected_element.innerText = value;
+		this.selected_element.innerText = value;
 		Set_dirty_bit()
-	},
+	}
 
-	Remove_selected: function() {
-		if (DOMEditor.read_only) return
+	Remove_selected () {
+		if (this.read_only) return
 		
-		if (DOMEditor.selected_element !== template_iframe.contentWindow.document.body) {
-			DOMEditor.selected_element.remove()
-			DOMEditor.selected_element = template_iframe.contentWindow.document.body
-			DOMEditor.Select_body()
+		if (this.selected_element !== this.iframe.contentWindow.document.body) {
+			this.selected_element.remove()
+			this.selected_element = this.iframe.contentWindow.document.body
+			this.Select_body()
 		}
 		Set_dirty_bit()
-	},
+	}
 
-	Set_attribute: function(attr, value) {
-		if (DOMEditor.read_only) return
+	Set_attribute (attr, value) {
+		if (this.read_only) return
 
-		DOMEditor.selected_element.setAttribute(attr, value)
+		this.selected_element.setAttribute(attr, value)
 		Set_dirty_bit()
-	},
+	}
 
-	Select_body: function() {
-		DOMEditor.Select(template_iframe.contentWindow.document.body)
-	},
+	Select_body () {
+		this.Select(this.iframe.contentWindow.document.body)
+	}
 
-	Select(element) {
-		if (DOMEditor.selected_element == element) {
-			DOMEditor.selected_element = template_iframe.contentWindow.document.body
+	Select (element) {
+		if (this.selected_element == element) {
+			this.selected_element = this.iframe.contentWindow.document.body
 		}
 		else {
-			DOMEditor.selected_element = element;
+			this.selected_element = element;
 		}
 
-		property_class_list.value = DOMEditor.selected_element.className.replace( /(?:^|\s)selected_element(?!\S)/g , '' )
+		property_class_list.value = this.selected_element.className.replace( /(?:^|\s)selected_element(?!\S)/g , '' )
 
 		// Remove selected class
-		let selected_element_list = template_iframe.contentWindow.document.body.querySelectorAll('.selected_element')
+		let selected_element_list = this.iframe.contentWindow.document.body.querySelectorAll('.selected_element')
 
-		if (template_iframe.contentWindow.document.body.classList.contains('selected_element')) {
-			template_iframe.contentWindow.document.body.classList.remove('selected_element')
+		if (this.iframe.contentWindow.document.body.classList.contains('selected_element')) {
+			this.iframe.contentWindow.document.body.classList.remove('selected_element')
 		}
 
 		for (const selected of selected_element_list) {
 			selected.classList.remove('selected_element')
 		}
 
-		StyleEditor.setClasses(DOMEditor.selected_element.classList)
-		DOMEditor.Set_Breadcrumbs(DOMEditor.selected_element)
+		StyleEditor.setClasses(this.selected_element.classList)
+		this.Set_Breadcrumbs(this.selected_element)
 
 		//Add selected class
-		DOMEditor.selected_element.classList.add('selected_element')
-	},
+		this.selected_element.classList.add('selected_element')
+	}
 
-	Get_Parents: function(element) {
+	Get_Parents (element) {
 		if (element.tagName == 'BODY')
 			return []
 
@@ -147,15 +149,16 @@ var DOMEditor = {
 		}
 
 		return parents.reverse();
-	},
+	}
 
-	Set_Breadcrumbs: function(element) {
-		let parents = DOMEditor.Get_Parents(element)
+	Set_Breadcrumbs (element) {
+		let parents = this.Get_Parents(element)
 
+		self = this
 		let body = m("a", {
 							class: "link pointer",
 							onclick: function() {
-								DOMEditor.Select_body()
+								self.Select_body()
 							}
 						},
 						'Body'
@@ -165,7 +168,7 @@ var DOMEditor = {
 							return m("a", {
 									class: "link pointer",
 									onclick: function() {
-										DOMEditor.Select(b)
+										self.Select(b)
 									}
 								},
 								' > ' + b.dataset['element_name']
@@ -174,7 +177,7 @@ var DOMEditor = {
 		m.mount(breadcrumb, {"view": function() {return [body].concat(list)}})
 	},
 
-	DOM2JSON: function(element) {
+	DOM2JSON (element) {
 	  if (!element) return null;
 
 	  const jsonNode = {
@@ -207,15 +210,15 @@ var DOMEditor = {
 	    	}
 	    }
 	    else if (childNode.nodeType === Node.ELEMENT_NODE) {
-	      jsonNode.children.push(DOMEditor.DOM2JSON(childNode));
+	      jsonNode.children.push(this.DOM2JSON(childNode));
 	    }
 	  }
 
 	  return jsonNode;
 	},
 
-	Body_to_JSON: function() {
-	  element = template_iframe.contentWindow.document.body
+	Body_to_JSON () {
+	  element = this.iframe.contentWindow.document.body
 
 	  const jsonNode = {
 	    attributes: {},
@@ -238,19 +241,19 @@ var DOMEditor = {
 	      jsonNode.children.push(childNode.nodeValue);
 	    }
 	    else if (childNode.nodeType === Node.ELEMENT_NODE) {
-	      jsonNode.children.push(DOMEditor.DOM2JSON(childNode));
+	      jsonNode.children.push(this.DOM2JSON(childNode));
 	    }
 	  }
 
 	  return jsonNode;
 	},
 
-	Save: function() {
-		let selected_element = DOMEditor.selected_element
-		DOMEditor.Select_body()
+	Save () {
+		let selected_element = this.selected_element
+		this.Select_body()
 		Reset_dirty_bit()
-		let json = DOMEditor.Body_to_JSON()
-		DOMEditor.Select(selected_element)
+		let json = this.Body_to_JSON()
+		this.Select(selected_element)
 
 		return json
 	},
@@ -271,7 +274,7 @@ var DOMEditor = {
 					element.appendChild(document.createTextNode(childJson));
 				}
 				else {
-					element.appendChild(DOMEditor.JSON2DOM(childJson));
+					element.appendChild(this.JSON2DOM(childJson));
 				}
 			}
 
@@ -281,7 +284,7 @@ var DOMEditor = {
 	JSON_to_Body(jsonNode) {
 		if (!jsonNode) return null;
 
-		let element = template_iframe.contentWindow.document.body
+		let element = this.iframe.contentWindow.document.body
 
 		for (const attr in jsonNode.attributes) {
 			element.setAttribute(attr, jsonNode.attributes[attr])
@@ -294,34 +297,32 @@ var DOMEditor = {
 					element.appendChild(document.createTextNode(childJson));
 				}
 				else {
-					element.appendChild(DOMEditor.JSON2DOM(childJson));
+					element.appendChild(this.JSON2DOM(childJson));
 				}
 			}
 	},
 
-	Load: function(jsonNode) {
-		DOMEditor.JSON_to_Body(jsonNode)
-		DOMEditor.Select_body()
-	},
+	Load (jsonNode) {
+		this.JSON_to_Body(jsonNode)
+		this.Select_body()
+	}
 
-	Set_readonly: function() {
-		DOMEditor.read_only = true
+	Set_readonly () {
+		this.read_only = true
 
-		template_iframe.contentWindow.document.querySelectorAll("span[contenteditable]").forEach(function(el){
+		this.iframe.contentWindow.document.querySelectorAll("span[contenteditable]").forEach (el){
           el.removeAttribute("contenteditable");
           el.dataset.contenteditable = true
-        })
-	},
+        }
+	}
 
-	Reset_readonly: function() {
-		DOMEditor.read_only = false
+	Reset_readonly () {
+		this.read_only = false
 
-		template_iframe.contentWindow.document.querySelectorAll("span[data-contenteditable]").forEach(function(el){
+		this.iframe.contentWindow.document.querySelectorAll("span[data-contenteditable]").forEach(function(el){
           el.setAttribute("contenteditable", true);
           delete el.dataset.contenteditable
         })
 	}
 
 }
-
-// export default DOMEditor
