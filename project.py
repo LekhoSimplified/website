@@ -56,4 +56,33 @@ def process(project, project_id):
 
     # routes.process(project, project_id)
     # index.process(project, project_id)
-    
+
+
+def export_templates(project, project_id):
+    project_name = project["Name"]
+    project_folder = secure_filename(project_name)
+
+    createDir(f"out/{project_folder}/assets")
+
+    shutil.copytree(f"website/assets/projects/{project_id}", f"out/{project_folder}/assets/", dirs_exist_ok=True)
+
+    # template_id = project["Template"]
+    # name = project['Templates'][template_id]['Name']
+    # view = project['Templates'][template_id]['View']
+
+    # body, main_level = template.To_html(project, name, view)
+
+    # template.Write(project_name, project_folder, mithril)
+
+    if 'Templates' in project:
+        for template_id in project['Templates']:
+            name = project['Templates'][template_id]['Name']
+            view = project['Templates'][template_id]['View']
+            body, main_level = template.To_html(project, name, view)
+
+            filename = secure_filename(name)
+
+            page.Write(project_name, project_folder, name, filename, body, "", main_level)
+
+    # routes.process(project, project_id)
+    # index.process(project, project_id)

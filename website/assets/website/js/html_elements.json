@@ -1,0 +1,88 @@
+[
+  {
+    "element": "input",
+    "type": "text",
+    "attributes": {
+      "name": "text",
+      "placeholder": "text",
+      "maxlength": "number",
+      "required": false
+    }
+  },
+  {
+    "element": "input",
+    "type": "email",
+    "attributes": {
+      "name": "text",
+      "placeholder": "text",
+      "required": false
+    }
+  },
+  {
+    "element": "input",
+    "type": "password",
+    "attributes": {
+      "name": "text",
+      "placeholder": "text",
+      "minlength": "number",
+      "required": false
+    }
+  },
+  {
+    "element": "input",
+    "type": "number",
+    "attributes": {
+      "name": "text",
+      "min": "number",
+      "max": "number",
+      "required": false
+    }
+  },
+  {
+    "element": "input",
+    "type": "checkbox",
+    "attributes": {
+      "name": "text",
+      "label": "text",
+      "required": false
+    }
+  },
+  {
+    "element": "input",
+    "type": "radio",
+    "attributes": {
+      "name": "gender",
+      "options": [
+        { "value": "text", "label": "text" },
+      ],
+      "required": false
+    }
+  },
+  {
+    "element": "select",
+    "attributes": {
+      "name": "text",
+      "options": [
+        { "value": "text", "label": "text" },
+      ],
+      "required": false
+    }
+  },
+  {
+    "element": "textarea",
+    "attributes": {
+      "name": "text",
+      "data-article": false,
+      "placeholder": "text",
+      "rows": "number",
+      "cols": "number"
+    }
+  },
+  {
+    "element": "button",
+    "type": "submit",
+    "attributes": {
+      "text": "text"
+    }
+  }
+]

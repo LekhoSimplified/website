@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ContentEditable List with Markdown Links</title>
+    <style>
+        #editor {
+            border: 1px solid #ccc;
+            padding: 10px;
+            min-height: 100px;
+            width: 400px;
+            outline: none;
+        }
+        li:empty::before {
+            content: "[text](url)";
+            color: gray;
+        }
+    </style>
+</head>
+<body>
+
+    <div contenteditable="true" id="editor">
+        <ol><li>[Example](https://example.com)</li></ol>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const editor = document.getElementById("editor");
+            const markdownRegex = /^\[.*?\]\(.*?\)$/; // Matches [text](url) format
+
+            function enforceListStructure() {
+                if (!editor.querySelector("ol")) {
+                    editor.innerHTML = "<ol><li>[text](url)</li></ol>";
+                }
+            }
+
+            function validateMarkdown(li) {
+                if (!markdownRegex.test(li.innerText.trim())) {
+                    li.innerText = "[text](url)";
+                }
+            }
+
+            editor.addEventListener("keydown", function (e) {
+                const selection = window.getSelection();
+                if (!selection.rangeCount) return;
+
+                const range = selection.getRangeAt(0);
+                let li = range.startContainer;
+
+                while (li && li.nodeName !== "LI") {
+                    li = li.parentNode;
+                }
+                if (!li) return;
+
+                if (e.key === "Tab") {
+                    e.preventDefault();
+                    if (e.shiftKey) {
+                        outdentListItem(li);
+                    } else {
+                        indentListItem(li);
+                    }
+                }
+
+                if (e.key === "Enter") {
+                    e.preventDefault();
+                    createNewListItem(li);
+                }
+            });
+
+            editor.addEventListener("input", function () {
+                document.querySelectorAll("li").forEach(validateMarkdown);
+            });
+
+            function indentListItem(li) {
+                let prevLi = li.previousElementSibling;
+                if (!prevLi) return;
+
+                let subList = prevLi.querySelector("ol");
+                if (!subList) {
+                    subList = document.createElement("ol");
+                    prevLi.appendChild(subList);
+                }
+
+                subList.appendChild(li);
+            }
+
+            function outdentListItem(li) {
+                let parentOl = li.parentNode;
+                if (!parentOl || parentOl.nodeName !== "OL") return;
+
+                let grandParentLi = parentOl.parentNode;
+                if (!grandParentLi || grandParentLi.nodeName !== "LI") return;
+
+                grandParentLi.parentNode.insertBefore(li, grandParentLi.nextSibling);
+
+                if (!parentOl.hasChildNodes()) {
+                    parentOl.remove();
+                }
+            }
+
+            function createNewListItem(li) {
+                let newLi = document.createElement("li");
+                newLi.innerText = "[text](url)";
+                li.parentNode.insertBefore(newLi, li.nextSibling);
+
+                let range = document.createRange();
+                let selection = window.getSelection();
+                range.setStart(newLi, 0);
+                range.collapse(true);
+                selection.removeAllRanges();
+                selection.addRange(range);
+            }
+
+            enforceListStructure();
+        });
+    </script>
+
+</body>
+</html>

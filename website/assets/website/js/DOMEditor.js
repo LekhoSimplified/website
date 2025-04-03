@@ -12,7 +12,7 @@ var DOMEditor = {
 		})
 
 		template_iframe.contentWindow.document.body.addEventListener("paste", (e) => {
-			e.preventDefault();
+			eg.preventDefault();
 			const text = e.clipboardData.getData('text/plain');
 			template_iframe.contentWindow.document.execCommand("insertHTML", false, text);
 		});
@@ -194,8 +194,8 @@ var DOMEditor = {
 
 	  for (const data_attr in element.dataset) {
 	    jsonNode.attributes['data-'+data_attr] = element.dataset[data_attr]
-	    	if (!jsonNode.attributes['data-'+attr].trim()) {
-				delete jsonNode.attributes['data-'+attr]
+	    	if (!jsonNode.attributes['data-'+data_attr].trim()) {
+				delete jsonNode.attributes['data-'+data_attr]
 			}
 	  }
 

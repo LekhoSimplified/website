@@ -11,6 +11,21 @@ from flask import Flask, jsonify, request
 
 import project as publish
 
+
+app = Flask(__name__, static_folder="website", static_url_path='/website')
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0  # Disable Caching
+
+
+
+@app.route("/")
+def hello():
+    return redirect("/website/index.html")
+
+
+##################
+# Helper Functions
+##################
+
 def secure_filename(unsafe_filename):
     keepcharacters = (' ','.','_','/','-')
     underscore_characters = (' ','/')
@@ -22,20 +37,19 @@ def secure_filename(unsafe_filename):
     safe_filename = partial_safe_filename
     return safe_filename
 
-
-app = Flask(__name__, static_folder="website", static_url_path='/website')
-app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0  # Disable Caching
-
-
 def createDir(path):
     isExist = os.path.exists(path)
     if not isExist:
        os.makedirs(path) 
+       
+def list_dir(path):
+    isExist = os.path.exists(path)
 
+    if isExist:
+        return [file for file in os.listdir( f'website/assets/projects/{project_id}/images') if not file.startswith('.')]
+    else:
+        return []
 
-@app.route("/")
-def hello():
-    return redirect("/website/index.html")
 
 ##################
 # Library
@@ -120,12 +134,21 @@ def publish_project(project_id):
     publish.process(project, project_id)
     return jsonify([0])
 
+@app.route("/project/<project_id>/export_templates")
+def export_templates(project_id):
+    with open(f'website/assets/projects/{project_id}/project.json') as f:
+        project = json.load(f)
+
+    publish.export_templates(project, project_id)
+    return jsonify([0])
+
 @app.route("/project/<project_id>/list_assets")
 def list_assets_project(project_id):
 
     assets = {}
-    assets["images"] = [file for file in os.listdir( f'website/assets/projects/{project_id}/images') if not file.startswith('.')]
-    assets["documents"] = [file for file in os.listdir( f'website/assets/projects/{project_id}/documents') if not file.startswith('.')]
+    assets["images"] = list_dir(f'website/assets/projects/{project_id}/images')
+    assets["documents"] = list_dir(f'website/assets/projects/{project_id}/documents')
+    assets["forms"] = list_dir(f'website/assets/projects/{project_id}/forms')
     assets['articles'] = {}
     assets['templates'] = {}
 

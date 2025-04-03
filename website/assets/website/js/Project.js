@@ -108,6 +108,16 @@ function Publish_project() {
 	})
 }
 
+
+function Export_templates() {
+
+	$.getJSON( `/project/${project_id}/export_templates`)
+	.fail(function() {
+		alert("Failed export templates.")
+	})
+}
+
+
 function Rename_project(new_name) {
 	fetch(`/project/${project_id}/rename`, {
         method: 'UPDATE',
